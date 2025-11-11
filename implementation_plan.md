@@ -391,6 +391,33 @@ This is an advanced, optional step to be performed after your server is running.
 
 For detailed instructions on configuration and rule creation, refer to the **[Official Jellyfin Meta Manager Documentation](https://metamanager.wiki/en/latest/index.html)**.
 
+### 8.2. Dynamic Collections with Trakt
+
+A core feature of Jellyfin Meta Manager (JMM) is its ability to sync with Trakt to create dynamic, auto-updating collections. This allows you to have rows on your Jellyfin home screen that mirror Trakt's popular lists.
+
+You can configure JMM to connect to your Trakt account and automatically create collections in Jellyfin that mirror those dynamic lists. Every time JMM runs (e.g., every night), it will update these collections with the latest movies from Trakt.
+
+The end result is that on your Jellyfin home screen, you will see new, auto-updating rows like:
+- Trending Now
+- Popular Movies
+- Most Anticipated
+
+#### Configuration in JMM
+
+In your `movies.yml` file for JMM, you would add a section like this:
+
+```yaml
+collections:
+  Trending:
+    trakt_trending: 10
+  Popular:
+    trakt_popular: 10
+  Most Anticipated:
+    trakt_anticipated: 10
+```
+
+This tells JMM to create three collections: "Trending", "Popular", and "Most Anticipated", each populated with the top 10 movies from the corresponding Trakt list. You can adjust the number to your liking.
+
 ---
 
 ## 9. Phase 6: Secure Remote Access
