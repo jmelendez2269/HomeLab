@@ -47,6 +47,22 @@ For factual tags, JMM can pull data directly from TheMovieDB (TMDb). This is per
 | `ensemble-cast`| Ensemble Casts | Movies featuring a large cast of principal actors. |
 | `so-bad-its-good`| So Bad It's Good | Enjoyably bad movies. |
 
+#### Sub-Category: Spiritual & Metaphysical
+
+| Desired Tag | Trakt List Name | Description |
+| :--- | :--- | :--- |
+| `faith-based` | Faith-Based | Movies with prominent religious or faith-related themes. |
+| `christian-film`| Christian Films | Films produced for a Christian audience. |
+| `buddhist-themes`| Buddhist Themes | Films exploring concepts of Buddhism. |
+| `mythology` | Mythology | Stories based on ancient myths and legends. |
+| `folklore` | Folklore | Tales and stories from traditional folklore. |
+| `metaphysical` | Metaphysical Cinema | Explores the nature of reality, consciousness, and existence. |
+| `consciousness`| Consciousness | Films centered on the exploration of consciousness. |
+| `mindfulness` | Mindfulness | Movies that evoke a sense of presence or mindfulness. |
+| `spiritual-journey`| Spiritual Journeys | Follows a character's journey of spiritual discovery. |
+| `afterlife` | Afterlife | Depictions or explorations of what comes after death. |
+| `reincarnation`| Reincarnation | Stories involving the concept of reincarnation. |
+
 ### Category 2: Objective & Factual Tags
 **(Recommended Method: TMDb Data)**
 
