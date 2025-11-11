@@ -4,20 +4,29 @@ This document contains a comprehensive list of potential tags you can automate u
 
 ---
 
-## Automation Methods
+## Automation Methods: A Deeper Dive
 
-There are two primary methods we'll use to automate tags:
+There are two primary methods we'll use to automate tags. The key is to let computers handle objective facts and use human curation (either your own or the community's) for subjective opinions.
 
-1.  **Trakt Lists (For Subjective Tags):** For personal, thematic, or mood-based tags, the best approach is to create a public list on [Trakt.tv](https://trakt.tv/). You give the list a name (e.g., "Date Night") and add movies to it. JMM then reads this list and applies a tag of your choice (e.g., `date-night`) to those movies in Jellyfin. This gives you full manual control over subjective categories.
+### 1. Trakt Lists (For Subjective & Thematic Tags)
 
-2.  **TMDb Data (For Objective Tags):** For factual tags, JMM can pull data directly from TheMovieDB (TMDb). This is perfect for tagging based on official genres, keywords, release dates, awards, etc.
+This is the recommended way to automate subjective tags without writing a custom "agent".
+
+-   **Your Personal Lists:** For hyper-specific tags like `girly-pop` or `inspirational`, you create a private list on [Trakt.tv](https://trakt.tv/). You are the curator. JMM reads this list and applies the tag.
+-   **Public Community Lists:** For broader themes like `feel-good` or `mind-bending`, you can find popular, well-maintained **public lists** on Trakt. Instead of curating your own, you leverage the work of the community. You find a list you like, and point JMM to it.
+
+**This is the best way to automate opinions.**
+
+### 2. TMDb Data (For Objective, Factual Tags)
+
+For factual tags, JMM can pull data directly from TheMovieDB (TMDb). This is perfect for tagging based on official genres, keywords, release dates, awards, etc.
 
 ---
 
-## Tag Ideas & Automation Logic
+## Expanded Tag Ideas & Automation Logic
 
-### Category 1: Subjective & Thematic Tags
-**(Recommended Method: Trakt List)**
+### Category 1: Subjective, Thematic, & Tonal Tags
+**(Recommended Method: Your Own or Public Trakt Lists)**
 
 | Desired Tag | Trakt List Name | Description |
 | :--- | :--- | :--- |
@@ -30,6 +39,13 @@ There are two primary methods we'll use to automate tags:
 | `rainy-day` | Rainy Day Flicks | Comforting or engaging movies perfect for a day indoors. |
 | `holiday` | Holiday Movies | Films centered around specific holidays (Christmas, Halloween, etc.). |
 | `guilty-pleasure`| Guilty Pleasures | Movies you love, regardless of critical reception. |
+| `cult-classic` | Cult Classics | Films with a dedicated, passionate fanbase. |
+| `slow-burn` | Slow Burn | Stories that build tension and atmosphere gradually. |
+| `atmospheric` | Atmospheric | Movies with a strong, immersive mood or feeling. |
+| `bleak` | Bleak & Somber | Films with a dark, pessimistic, or melancholic tone. |
+| `whimsical` | Whimsical | Playful, quaint, and fanciful films. |
+| `ensemble-cast`| Ensemble Casts | Movies featuring a large cast of principal actors. |
+| `so-bad-its-good`| So Bad It's Good | Enjoyably bad movies. |
 
 ### Category 2: Objective & Factual Tags
 **(Recommended Method: TMDb Data)**
@@ -41,11 +57,14 @@ There are two primary methods we'll use to automate tags:
 | `animation` | Genre is "Animation". |
 | `anime` | Keyword is "anime". |
 | `live-action` | Genre is NOT "Animation". |
-| `based-on-a-book`| Keyword is "based on book". |
-| `based-on-comic`| Keyword is "based on comic". |
-| `based-on-video-game`| Keyword is "based on video game". |
+| `stop-motion` | Keyword is "stop motion". |
+| `hand-drawn` | Keyword is "hand-drawn animation". |
+| `cgi-animation`| Keyword is "cgi" or "computer animation". |
+| `black-and-white`| `colors` field in TMDb data is empty or indicates B&W. |
+| `silent-film` | Keyword is "silent film". |
 | `oscar-winner` | Award information indicates a "Best Picture" Oscar win. |
 | `golden-globe-winner`| Award information indicates a "Best Motion Picture" Golden Globe win. |
+| `60s` | Release year is between 1960-1969. |
 | `70s` | Release year is between 1970-1979. |
 | `80s` | Release year is between 1980-1989. |
 | `90s` | Release year is between 1990-1999. |
@@ -53,41 +72,54 @@ There are two primary methods we'll use to automate tags:
 | `2010s` | Release year is between 2010-2019. |
 | `2020s` | Release year is between 2020-2029. |
 
-#### Sub-Category: Topics & Keywords
+#### Sub-Category: Topics, Keywords & Concepts
 
 | Desired Tag | Automation Logic (TMDb) |
 | :--- | :--- |
 | `money` | Keyword is "money", "wall street", or "finance". |
 | `dystopian` | Keyword is "dystopia". |
 | `cyberpunk` | Keyword is "cyberpunk". |
+| `steampunk` | Keyword is "steampunk". |
 | `post-apocalyptic`| Keyword is "post-apocalyptic". |
 | `time-travel` | Keyword is "time travel". |
 | `space-travel`| Keyword is "space travel". |
 | `alien-invasion`| Keyword is "alien invasion". |
 | `heist` | Keyword is "heist". |
 | `mockumentary`| Keyword is "mockumentary". |
-| `found-footage`| Keyword is "found footage". |
-| `spy` | Keyword is "spy". |
+| `spy` | Keyword is "spy" or "espionage". |
 | `disaster` | Keyword is "disaster". |
 | `martial-arts`| Keyword is "martial arts". |
 | `superhero` | Keyword is "superhero". |
 | `film-noir` | Keyword is "film noir". |
+| `coming-of-age`| Keyword is "coming of age". |
+| `road-trip` | Keyword is "road trip". |
+| `satire` | Keyword is "satire". |
+| `biopic` | Keyword is "biography". |
+| `conspiracy` | Keyword is "conspiracy". |
+| `addiction` | Keyword is "addiction". |
+| `survival` | Keyword is "survival". |
+| `courtroom-drama`| Keyword is "courtroom drama". |
+| `political-thriller`| Keyword is "political thriller". |
+| `robots-androids`| Keyword is "robot" or "android". |
+| `virtual-reality`| Keyword is "virtual reality". |
+| `alternate-history`| Keyword is "alternate history". |
+| `magic` | Keyword is "magic". |
+| `mythology` | Keyword is "mythology". |
+| `car-chase` | Keyword is "car chase". |
+| `buddy-cop` | Keyword is "buddy cop". |
 
-#### Sub-Category: Documentary Types
-*(These rules should be applied only to your "Documentary" library)*
+#### Sub-Category: Based on Source Material
 
 | Desired Tag | Automation Logic (TMDb) |
 | :--- | :--- |
-| `docu-nature` | Keyword is "nature" or "animal". |
-| `docu-history` | Genre is "History". |
-| `docu-people` | Keyword is "biography". |
-| `docu-events` | Keyword relates to specific historical events. |
-| `docu-science` | Keyword is "science" or "technology". |
-| `true-crime` | Keyword is "true crime". |
-| `docu-sports` | Keyword is "sports". |
+| `based-on-a-book`| Keyword is "based on book". |
+| `based-on-comic`| Keyword is "based on comic". |
+| `based-on-video-game`| Keyword is "based on video game". |
+| `based-on-play` | Keyword is "based on play". |
+| `based-on-true-story`| Keyword is "based on true story". |
 
 #### Sub-Category: Horror Sub-Genres
-*(These rules should be applied only to your "Horror" library)*
+*(Apply only to your "Horror" library)*
 
 | Desired Tag | Automation Logic (TMDb) |
 | :--- | :--- |
@@ -100,7 +132,21 @@ There are two primary methods we'll use to automate tags:
 | `vampire` | Keyword is "vampire". |
 | `werewolf` | Keyword is "werewolf". |
 | `ghost` | Keyword is "ghost". |
+| `folk-horror` | Keyword is "folk horror". |
+| `cosmic-horror`| Keyword is "cosmic horror". |
+| `gothic` | Keyword is "gothic". |
 
----
+#### Sub-Category: Documentary Types
+*(Apply only to your "Documentary" library)*
 
-This list should provide a fantastic starting point. You can now go through this file, remove any tags you don't want, and add any others you can think of.
+| Desired Tag | Automation Logic (TMDb) |
+| :--- | :--- |
+| `docu-nature` | Keyword is "nature" or "animal". |
+| `docu-history` | Genre is "History". |
+| `docu-people` | Keyword is "biography". |
+| `docu-events` | Keyword relates to specific historical events. |
+| `docu-science` | Keyword is "science" or "technology". |
+| `true-crime` | Keyword is "true crime". |
+| `docu-sports` | Keyword is "sports". |
+| `docu-music` | Keyword is "music" or "concert film". |
+| `docu-political`| Keyword is "politics". |
