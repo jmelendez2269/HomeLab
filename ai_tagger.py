@@ -24,15 +24,23 @@ SUBJECTIVE_CATEGORIES = [
 
 # The prompt template for the AI
 AI_PROMPT_TEMPLATE = """
-You are an expert movie curator. Given the following movie information, please assign it to one or more of the following subjective categories: {categories}.
+You are an expert movie curator. Your task is to assign a movie to one or more of the following subjective categories: {categories}.
+
+To help you understand my categories, here are some examples:
+- **girly-pop**: 'Mean Girls', 'The Devil Wears Prada', 'Legally Blonde'
+- **date-night**: 'About Time', 'La La Land', 'When Harry Met Sally...'
+- **mind-bending**: 'Inception', 'The Matrix', 'Primer', 'Shutter Island'
+- **feel-good**: 'Paddington 2', 'School of Rock', 'Ted Lasso'
+- **raunchy**: 'Superbad', 'The Hangover', 'Booksmart'
+
+Based on these examples, please categorize the following movie.
 
 - Movie Title: {title}
 - Year: {year}
 - Genres: {genres}
 - Plot Summary: {overview}
 
-Respond with a comma-separated list of the categories you think this movie belongs to. If you don't think it fits any of the categories, respond with "None".
-Example response: "feel-good, date-night"
+Respond with a comma-separated list of the categories you think this movie belongs to. If it fits none, respond with "None".
 """
 
 def get_jellyfin_movies(headers):
