@@ -18,8 +18,10 @@ LOCAL_AI_API_URL = os.getenv("LOCAL_AI_API_URL", "http://localhost:1234/v1/chat/
 # --- AI Configuration ---
 # Define the subjective categories you want the AI to use
 SUBJECTIVE_CATEGORIES = [
-    "girly-pop", "date-night", "feel-good", "inspirational",
-    "raunchy", "mind-bending", "rainy-day", "so-bad-its-good"
+    "girly-pop", "date-night", "feel-good", "inspirational", "raunchy", 
+    "mind-bending", "rainy-day", "holiday", "guilty-pleasure", "cult-classic",
+    "slow-burn", "atmospheric", "bleak", "whimsical", "ensemble-cast",
+    "so-bad-its-good", "metaphysical", "spiritual-journey"
 ]
 
 # The prompt template for the AI
@@ -29,9 +31,22 @@ You are an expert movie curator. Your task is to assign a movie to one or more o
 To help you understand my categories, here are some examples:
 - **girly-pop**: 'Mean Girls', 'The Devil Wears Prada', 'Legally Blonde'
 - **date-night**: 'About Time', 'La La Land', 'When Harry Met Sally...'
-- **mind-bending**: 'Inception', 'The Matrix', 'Primer', 'Shutter Island'
-- **feel-good**: 'Paddington 2', 'School of Rock', 'Ted Lasso'
-- **raunchy**: 'Superbad', 'The Hangover', 'Booksmart'
+- **feel-good**: 'Paddington 2', 'School of Rock', 'Chef'
+- **inspirational**: 'Hidden Figures', 'The Pursuit of Happyness', 'Rocky'
+- **raunchy**: 'American Pie', 'Eurotrip', 'Superbad'
+- **mind-bending**: 'Inception', 'Primer', 'Shutter Island'
+- **rainy-day**: 'You\\'ve Got Mail', 'Pride and Prejudice', 'The Princess Bride'
+- **holiday**: 'Home Alone', 'Elf', 'The Nightmare Before Christmas'
+- **guilty-pleasure**: 'Drumline', 'You Got Served', 'Step Up', 'Stick It'
+- **cult-classic**: 'The Big Lebowski', 'Donnie Darko', 'Pulp Fiction'
+- **slow-burn**: 'Blade Runner 2049', 'The Invitation', 'Tinker Tailor Soldier Spy'
+- **atmospheric**: 'Blade Runner', 'Stalker', 'A Ghost Story'
+- **bleak**: 'The Road', 'Requiem for a Dream', 'Se7en'
+- **whimsical**: 'Amélie', 'The Grand Budapest Hotel', 'Paddington'
+- **ensemble-cast**: 'Ocean\\'s Eleven', 'Knives Out', 'The Grand Budapest Hotel'
+- **so-bad-its-good**: 'The Room', 'Troll 2', 'Sharknado'
+- **metaphysical**: 'The Tree of Life', '2001: A Space Odyssey', 'Waking Life'
+- **spiritual-journey**: 'Wild', 'Eat Pray Love', 'Samsara'
 
 Based on these examples, please categorize the following movie.
 
