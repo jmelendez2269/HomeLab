@@ -418,6 +418,14 @@ collections:
 
 This tells JMM to create three collections: "Trending", "Popular", and "Most Anticipated", each populated with the top 10 movies from the corresponding Trakt list. You can adjust the number to your liking.
 
+### 8.3. Dynamic Library Rotation Script
+
+To further enhance the dynamic nature of your Jellyfin server, a Python script (`rotate_jellyfin_libraries.py`) has been provided. This script allows you to automatically rotate which libraries are visible to a specific user on a scheduled basis.
+
+This is particularly useful for creating a fresh and engaging experience for users by preventing the same categories from always being displayed.
+
+For detailed instructions on how to set up, configure, and schedule this script, please refer to the `README.md` file in the project root.
+
 ---
 
 ## 9. Phase 6: Secure Remote Access
