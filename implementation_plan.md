@@ -452,3 +452,36 @@ A Python script, `ai_tagger.py`, has been provided to facilitate this. It works 
 These tags can then be used by Jellyfin Meta Manager (JMM) to create dynamic collections.
 
 For detailed instructions on how to set up and use this advanced feature, please refer to the `ai_tagger_README.md` file.
+
+---
+
+## 11. Phase 8: Trakt Integration (Optional)
+
+To further enhance your media server, you can integrate it with Trakt.tv. This turns Trakt into a central hub for your viewing activity and helps you discover new content.
+
+### 11.1. Level 1: Two-Way Sync with the Official Trakt Plugin
+
+This is the recommended first step for Trakt integration.
+
+-   **What it is:** A free plugin for Jellyfin that syncs your activity with your Trakt.tv profile.
+-   **Key Features:** Scrobbling (watch history sync), rating sync, and watchlist sync.
+-   **How to Install:**
+    1.  In your Jellyfin dashboard, go to **Advanced** > **Plugins** > **Catalog**.
+    2.  Find and install the **Trakt** plugin.
+    3.  Restart your Jellyfin server.
+    4.  Configure the plugin in the new "Trakt" section of your dashboard.
+
+### 11.2. Level 2: Personalized Recommendations with JellyNext
+
+This uses your Trakt history to help you discover new content.
+
+-   **What it is:** A separate plugin that provides personalized recommendations.
+-   **Key Features:** An "Up Next" list based on your history and integration with Radarr/Sonarr to automatically download recommendations.
+-   **How to Install:** Look for the **JellyNext** plugin in the Jellyfin plugin catalog.
+
+### 11.3. Level 3: Custom Curation with Personal Lists
+
+This is a great way to supplement the AI tagger for very specific collections.
+
+-   **What it is:** You can create your own personal lists on the Trakt.tv website.
+-   **How it works:** JMM can use these personal lists to create corresponding collections in Jellyfin, giving you manual control over curation. This is configured in your JMM `movies.yml` file.
