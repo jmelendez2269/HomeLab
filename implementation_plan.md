@@ -437,3 +437,18 @@ For detailed instructions on how to set up, configure, and schedule this script,
 2.  **Access Jellyfin:**
     - Find the Tailscale IP address of your Windows PC from the Tailscale admin console.
     - Your neighbor can now access your Jellyfin server at `http://YOUR_TAILSCALE_IP:8096`. They will see only the libraries you granted them access to.
+
+---
+
+## 10. Phase 7: AI-Powered Subjective Tagging (Optional)
+
+For the ultimate in personalized curation, you can use a local AI model to automatically tag your movies with your own subjective categories. This allows you to create collections that are perfectly tailored to your tastes.
+
+A Python script, `ai_tagger.py`, has been provided to facilitate this. It works by:
+1.  Fetching metadata for each movie in your Jellyfin library.
+2.  Prompting a local AI model to assign your custom subjective categories.
+3.  Applying these categories as tags to the movies in Jellyfin.
+
+These tags can then be used by Jellyfin Meta Manager (JMM) to create dynamic collections.
+
+For detailed instructions on how to set up and use this advanced feature, please refer to the `ai_tagger_README.md` file.
