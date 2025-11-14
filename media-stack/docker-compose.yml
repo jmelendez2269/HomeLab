@@ -1,0 +1,102 @@
+version: "3.7"
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - TZ=${TZ}
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
+      - VPN_TYPE=${VPN_TYPE}
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+    ports:
+      - "${QBITTORRENT_PORT}:${QBITTORRENT_PORT}" # qBittorrent Web UI
+      - "6881:6881/tcp" # qBittorrent
+      - "6881:6881/udp" # qBittorrent
+      - "${PROWLARR_PORT}:9696" # Prowlarr Web UI
+      - "${SONARR_PORT}:8989" # Sonarr Web UI
+      - "${RADARR_PORT}:7878" # Radarr Web UI
+    volumes:
+      - ./gluetun:/gluetun
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+      - WEBUI_PORT=${QBITTORRENT_PORT}
+    volumes:
+      - ./qbittorrent/config:/config
+      - "M:/downloads:/downloads"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ./prowlarr/config:/config
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ./sonarr/config:/config
+      - "M:/tv:/tv"
+      - "M:/downloads:/downloads"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ./radarr/config:/config
+      - "M:/movies:/movies"
+      - "M:/downloads:/downloads"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    ports:
+      - "${JELLYFIN_PORT}:8096"
+    volumes:
+      - ./jellyfin/config:/config
+      - "M:/tv:/data/tv"
+      - "M:/movies:/data/movies"
+    restart: unless-stopped
