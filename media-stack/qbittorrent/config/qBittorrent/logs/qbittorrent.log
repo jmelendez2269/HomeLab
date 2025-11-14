@@ -58,3 +58,4 @@
 (I) 2025-11-13T21:39:39 - Successfully listening on IP. IP: "fe80::64a4:db99:a606:3fb8%tun0". Port: "UTP/6881"
 (I) 2025-11-13T21:39:39 - Successfully listening on IP. IP: "172.21.22.214". Port: "TCP/6881"
 (I) 2025-11-13T21:39:39 - Successfully listening on IP. IP: "172.21.22.214". Port: "UTP/6881"
+(I) 2025-11-13T21:39:42 - Detected external IP. IP: "173.255.174.23"
