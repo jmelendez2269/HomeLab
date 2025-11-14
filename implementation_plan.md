@@ -21,6 +21,7 @@
 | **Media Server** | Jellyfin | To organize, serve, and stream media with curated user profiles. |
 | **Movie Automation** | Radarr | To monitor for and grab new movie releases. |
 | **TV Automation** | Sonarr | To monitor for and grab new TV show episodes. |
+| **Book Automation** | Readarr | To monitor for and grab new book releases. |
 | **Indexer Manager** | Prowlarr | To manage all of our indexer configurations in one place. |
 | **Download Client** | qBittorrent | To download the media files. |
 | **Download Security**| GlueTUN | To ensure the download client's traffic is routed through a VPN. |
@@ -79,6 +80,7 @@ Our goal is a Netflix-style home screen with curated rows for different genres. 
     - Inside `media`, create the following folders:
         - `downloads`
         - `tv`
+        - `books`
         - `movies`
     - Inside the `movies` folder, create subfolders for each genre you want to use. **Do not use spaces or special characters in folder names.**
         - *Example Starting Point:*
@@ -141,6 +143,7 @@ JELLYFIN_PORT=8096
 RADARR_PORT=7878
 SONARR_PORT=8989
 PROWLARR_PORT=9696
+READARR_PORT=8787
 QBITTORRENT_PORT=8080
 ```
 
@@ -168,6 +171,10 @@ services:
       - "${QBITTORRENT_PORT}:${QBITTORRENT_PORT}" # qBittorrent Web UI
       - "6881:6881/tcp" # qBittorrent
       - "6881:6881/udp" # qBittorrent
+      - "${PROWLARR_PORT}:9696" # Prowlarr Web UI
+      - "${SONARR_PORT}:8989" # Sonarr Web UI
+      - "${RADARR_PORT}:7878" # Radarr Web UI
+      - "${READARR_PORT}:8787" # Readarr Web UI
     volumes:
       - ./gluetun:/gluetun
     restart: unless-stopped
@@ -234,6 +241,22 @@ services:
       - gluetun
     restart: unless-stopped
 
+  readarr:
+    image: lscr.io/linuxserver/readarr:latest
+    container_name: readarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ./readarr/config:/config
+      - "M:/books:/books"
+      - "M:/downloads:/downloads"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
@@ -270,6 +293,7 @@ After the containers are running, you will configure each service through its we
 
 1.  **Navigate:** Open `http://localhost:8080` in your browser.
 2.  **Login:** The default username is `admin` and the password is `adminadmin`. You will be forced to change this immediately. Set a new, secure password.
+    - **Note:** On the first run, the container might generate a temporary random password. If `adminadmin` does not work, check the container logs for a message containing the temporary password. You can view the logs by running `docker-compose logs qbittorrent` in the `media-stack` directory.
 3.  **Set Default Save Path:**
     - Go to `Tools` > `Options` (the gear icon).
     - Select the `Downloads` tab.
@@ -285,13 +309,42 @@ After the containers are running, you will configure each service through its we
 2.  **Add Indexers:**
     - Click on `Indexers` in the left menu, then click `Add Indexer` (the `+` button).
     - A list of presets will appear. Search for the indexers you use. If you don't have private indexers, you can start with public ones like `1337x`.
+    - **Note:** Some public indexers, like `1337x`, may be protected by Cloudflare, which can block requests from the server. If you encounter errors, it is often easier to use alternative indexers. Good public alternatives include **YTS** (for movies) and **EZTV** (for TV shows).
     - Click on the desired indexer. A dialog will pop up.
     - Click `Test` (the green checkmark). If it succeeds, click `Save`.
     - Repeat for all the indexers you wish to use.
 
 ---
 
-#### **C. Radarr (Movie Automation)**
+#### **C. Readarr (Book Automation)**
+
+1.  **Navigate:** Open Readarr at `http://localhost:8787`.
+2.  **Connect Download Client:**
+    - Go to `Settings` > `Download Clients`.
+    - Click `Add` (`+`).
+    - Select `qBittorrent`.
+    - **Name:** `qBittorrent`
+    - **Host:** `qbittorrent`
+    - **Port:** `8080`
+    - **Username/Password:** Enter the new username and password you set for the qBittorrent web UI.
+    - Click `Test`. If it succeeds, click `Save`.
+3.  **Connect Indexers via Prowlarr:**
+    - Go to `Settings` > `Indexers`.
+    - Click `Add` (`+`).
+    - Select `Prowlarr`.
+    - **Name:** `Prowlarr`
+    - **Sync Level:** `Full Sync` is recommended.
+    - **Prowlarr Server:** `http://prowlarr:9696`
+    - **API Key:** Get this from your Prowlarr UI.
+    - Click `Test`. If it succeeds, click `Save`.
+4.  **Configure Root Media Folder:**
+    - Go to `Settings` > `Media Management`.
+    - In the `Root Folders` section, click `Add Root Folder`.
+    - The path to enter is exactly `/books`. Click `OK`.
+
+---
+
+#### **D. Radarr (Movie Automation)**
 
 The setup for Radarr is critical for our new genre-based sorting.
 
@@ -311,7 +364,7 @@ The setup for Radarr is critical for our new genre-based sorting.
 
 ---
 
-#### **D. Sonarr (TV Shows) & Radarr (Movies)**
+#### **E. Sonarr (TV Shows)**
 
 The setup for Sonarr and Radarr is nearly identical. We will use Sonarr as the example.
 
@@ -341,7 +394,7 @@ The setup for Sonarr and Radarr is nearly identical. We will use Sonarr as the e
 
 ---
 
-#### **E. Jellyfin (Media Server)**
+#### **F. Jellyfin (Media Server)**
 
 1.  **Navigate:** Open `http://localhost:8096` and complete the initial startup wizard (create admin user, etc.).
 2.  **Add Media Libraries (New Method):**
