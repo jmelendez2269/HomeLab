@@ -29,13 +29,13 @@ services:
     container_name: qbittorrent
     network_mode: "service:gluetun"
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${TZ}
       - WEBUI_PORT=${QBITTORRENT_PORT}
     volumes:
       - ./qbittorrent/config:/config
-      - "M:/downloads:/downloads"
+      - "/mnt/nas/downloads:/downloads"
     depends_on:
       - gluetun
     restart: unless-stopped
@@ -45,8 +45,8 @@ services:
     container_name: prowlarr
     network_mode: "service:gluetun"
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${TZ}
     volumes:
       - ./prowlarr/config:/config
@@ -59,13 +59,13 @@ services:
     container_name: sonarr
     network_mode: "service:gluetun"
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${TZ}
     volumes:
       - ./sonarr/config:/config
-      - "M:/tv:/tv"
-      - "M:/downloads:/downloads"
+      - "/mnt/nas/tv:/tv"
+      - "/mnt/nas/downloads:/downloads"
     depends_on:
       - gluetun
     restart: unless-stopped
@@ -75,13 +75,13 @@ services:
     container_name: radarr
     network_mode: "service:gluetun"
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${TZ}
     volumes:
       - ./radarr/config:/config
-      - "M:/movies:/movies"
-      - "M:/downloads:/downloads"
+      - "/mnt/nas/movies:/movies"
+      - "/mnt/nas/downloads:/downloads"
     depends_on:
       - gluetun
     restart: unless-stopped
@@ -90,13 +90,13 @@ services:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${TZ}
     ports:
       - "${JELLYFIN_PORT}:8096"
     volumes:
       - ./jellyfin/config:/config
-      - "M:/tv:/data/tv"
-      - "M:/movies:/data/movies"
+      - "/mnt/nas/tv:/data/tv"
+      - "/mnt/nas/movies:/data/movies"
     restart: unless-stopped

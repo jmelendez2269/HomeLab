@@ -57,35 +57,29 @@ python rotate_jellyfin_libraries.py
 
 The script will print the libraries it has selected and confirm that the user's policy has been updated.
 
-## Scheduling the Script on Windows
+## Scheduling the Script on Linux
 
-To make the library rotation happen automatically, you can use the Windows Task Scheduler.
+To make the library rotation happen automatically, you can use `cron`, the standard Linux task scheduler.
 
-1.  **Open Task Scheduler:**
-    Press the Windows key, type "Task Scheduler", and press Enter.
+1.  **Open your Crontab:**
+    Open a terminal on your Linux server and run the following command to edit your user's crontab file:
+    ```sh
+    crontab -e
+    ```
+    If it's your first time, you may be asked to choose a text editor (like `nano`).
 
-2.  **Create a New Task:**
-    In the right-hand pane, click "Create Basic Task...".
+2.  **Add the Schedule:**
+    Add the following line to the end of the file. This example runs the script every day at 3:00 AM.
 
-3.  **Name and Description:**
-    - Name: `Jellyfin Library Rotator`
-    - Description: `Rotates the visible libraries for a Jellyfin user on a schedule.`
-    - Click `Next`.
+    ```cron
+    0 3 * * * /usr/bin/python3 /path/to/your/rotate_jellyfin_libraries.py
+    ```
 
-4.  **Trigger:**
-    - Choose how often you want the rotation to happen (e.g., `Daily`, `Weekly`).
-    - Click `Next` and specify the time you want the task to run.
+    - `0 3 * * *` is the schedule (minute, hour, day of month, month, day of week).
+    - `/usr/bin/python3` is the path to your Python interpreter. You can find it by running `which python3`.
+    - `/path/to/your/rotate_jellyfin_libraries.py` is the absolute path to the script. Make sure the `.env` file is in the same directory.
 
-5.  **Action:**
-    - Select `Start a program`.
-    - Click `Next`.
-
-6.  **Start a Program:**
-    - **Program/script:** Enter the full path to your Python executable (e.g., `C:\Python39\python.exe`). You can find this by running `where python` in PowerShell.
-    - **Add arguments (optional):** Enter the full path to your `rotate_jellyfin_libraries.py` script (e.g., `C:\Users\YourUser\Documents\Projects\Home Lab\rotate_jellyfin_libraries.py`).
-    - **Start in (optional):** Enter the directory where your script is located (e.g., `C:\Users\YourUser\Documents\Projects\Home Lab`). This is important so the script can find the `.env` file.
-
-7.  **Finish:**
-    - Review the settings and click `Finish`.
+3.  **Save and Exit:**
+    - If using `nano`, press `Ctrl+X`, then `Y`, then `Enter`.
 
 The script will now run automatically on the schedule you defined, rotating the visible libraries for your specified Jellyfin user.
