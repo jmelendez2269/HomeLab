@@ -57,3 +57,48 @@ Given the roadblocks, the decision was made to pivot to a more robust and reliab
 *   **New Server:** A Lenovo M710 desktop.
 *   **New OS:** Ubuntu Server LTS.
 *   **New Approach:** The Lenovo M710 will run the Docker stack. It will mount the Synology `media` share over the network. This Linux-to-Linux connection is much more stable and avoids the Windows-specific permission issues. The `implementation_plan.md` has been updated to reflect this new direction.
+
+---
+
+## Docker Compose Setup Issues (November 2025)
+
+### Issues Encountered
+
+1. **Readarr Image Not Found:**
+   - **Problem:** Initial attempt used `lscr.io/linuxserver/readarr:latest`, but LinuxServer.io does not maintain a Readarr image.
+   - **Error:** `failed to resolve reference "lscr.io/linuxserver/readarr:latest": not found`
+   - **Solution:** Changed to `binhex/arch-readarr:latest`, which is a publicly available image on Docker Hub.
+
+2. **Port Conflicts:**
+   - **Problem:** Port 8030 and 8080 were already in use, preventing gluetun from starting.
+   - **Error:** `failed to bind host port 0.0.0.0:8030/tcp: address already in use`
+   - **Solution:** 
+     - Stopped and removed existing gluetun and qbittorrent containers: `sudo docker stop gluetun && sudo docker rm gluetun`
+     - Checked for port conflicts: `sudo lsof -i :8080` or `sudo docker ps -a | grep gluetun`
+     - If needed, changed port in `.env` file (e.g., `QBITTORRENT_PORT=8081`)
+
+3. **Docker Permission Issues:**
+   - **Problem:** User couldn't run Docker commands without `sudo`.
+   - **Error:** `permission denied while trying to connect to the docker API`
+   - **Solution:** Added user to docker group: `sudo usermod -aG docker $USER`, then logged out and back in (or run `newgrp docker`).
+
+4. **YAML Indentation:**
+   - **Problem:** Initial docker-compose.yml had inconsistent indentation.
+   - **Solution:** Fixed all indentation to use consistent 2-space indentation throughout.
+
+5. **Missing READARR_PORT Mapping:**
+   - **Problem:** READARR_PORT was not mapped in gluetun's ports section.
+   - **Solution:** Added `- "${READARR_PORT}:8787" # Readarr Web UI` to gluetun ports.
+
+6. **Jellyfin DNS Configuration:**
+   - **Added:** DNS configuration to jellyfin service for better connectivity:
+     ```yaml
+     dns:
+       - 8.8.8.8
+     ```
+
+### Final Working Configuration
+
+*   **Readarr Image:** `binhex/arch-readarr:latest`
+*   **All containers successfully started** after resolving port conflicts and permission issues.
+*   **Docker Compose version warning:** The `version: "3.7"` attribute is obsolete in Docker Compose v2 but can be safely ignored or removed.

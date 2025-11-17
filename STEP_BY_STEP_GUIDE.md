@@ -108,7 +108,15 @@ This guide provides a granular, step-by-step checklist for setting up your fully
   - `Add Root Folder` and enter the path: `/movies`.
   - **Workflow Note:** When adding a new movie, you must manually edit the path to place it in the correct genre subfolder (e.g., `/movies/scifi`).
 
-### 3.5. Jellyfin
+### 3.5. Readarr (for Books)
+
+- [ ] Navigate to `http://YOUR_UBUNTU_SERVER_IP:8787`.
+- [ ] **Connect Download Client and Indexers** (follow the same steps as for Sonarr/Radarr).
+- [ ] **Configure Root Folder:**
+  - Go to `Settings` > `Media Management`.
+  - `Add Root Folder` and enter the path: `/books`.
+
+### 3.6. Jellyfin
 
 - [ ] Navigate to `http://YOUR_UBUNTU_SERVER_IP:8096` and complete the startup wizard.
 - [ ] **Add Media Libraries:**
@@ -118,6 +126,7 @@ This guide provides a granular, step-by-step checklist for setting up your fully
   - **Folders:** Add the path `/data/movies/action`.
   - Repeat this for every genre folder you created.
   - Add a `TV Shows` library pointing to `/data/tv`.
+  - Add a `Books` library pointing to `/data/books`.
 - [ ] **Create User Accounts:**
   - Go to `Dashboard` > `Users`.
   - Create accounts for other users.

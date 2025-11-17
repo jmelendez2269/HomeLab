@@ -270,7 +270,7 @@ All the following commands are to be run on the Ubuntu server.
             restart: unless-stopped
 
           readarr:
-            image: lscr.io/linuxserver/readarr:latest
+            image: binhex/arch-readarr:latest
             container_name: readarr
             network_mode: "service:gluetun"
             environment:
@@ -288,6 +288,8 @@ All the following commands are to be run on the Ubuntu server.
           jellyfin:
             image: lscr.io/linuxserver/jellyfin:latest
             container_name: jellyfin
+            dns:
+              - 8.8.8.8
             environment:
               - PUID=${PUID}
               - PGID=${PGID}

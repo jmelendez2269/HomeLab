@@ -20,6 +20,7 @@ services:
       - "${PROWLARR_PORT}:9696" # Prowlarr Web UI
       - "${SONARR_PORT}:8989" # Sonarr Web UI
       - "${RADARR_PORT}:7878" # Radarr Web UI
+      - "${READARR_PORT}:8787" # Readarr Web UI
     volumes:
       - ./gluetun:/gluetun
     restart: unless-stopped
@@ -86,9 +87,27 @@ services:
       - gluetun
     restart: unless-stopped
 
+  readarr:
+    image: binhex/arch-readarr:latest
+    container_name: readarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./readarr/config:/config
+      - /mnt/nas/books:/books
+      - /mnt/nas/downloads:/downloads
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
+    dns:
+      - 8.8.8.8
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -97,6 +116,7 @@ services:
       - "${JELLYFIN_PORT}:8096"
     volumes:
       - ./jellyfin/config:/config
-      - "/mnt/nas/tv:/data/tv"
-      - "/mnt/nas/movies:/data/movies"
+      - /mnt/nas/tv:/data/tv
+      - /mnt/nas/movies:/data/movies
+      - /mnt/nas/books:/data/books
     restart: unless-stopped
