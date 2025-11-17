@@ -62,11 +62,13 @@ This guide provides a granular, step-by-step checklist for setting up your fully
 
 ## Section 3: Initial Service Configuration
 
-*In your browser, navigate to `http://YOUR_UBUNTU_SERVER_IP:PORT` for each service.*
+**Server IP (Tailscale):** `100.114.128.38`
+
+*In your browser, navigate to the service URLs below using the Tailscale IP address. Tailscale provides secure, encrypted access from anywhere without needing to open ports on your router.*
 
 ### 3.1. qBittorrent
 
-- [ ] Navigate to `http://YOUR_UBUNTU_SERVER_IP:8080`.
+- [ ] Navigate to `http://100.114.128.38:8080` (Tailscale IP).
 - [ ] Login with `admin`/`adminadmin` and change the password immediately.
 - [ ] Go to `Tools` > `Options` > `Downloads`.
 - [ ] Set `Default Save Path` to exactly: `/downloads`.
@@ -74,14 +76,14 @@ This guide provides a granular, step-by-step checklist for setting up your fully
 
 ### 3.2. Prowlarr
 
-- [ ] Navigate to `http://YOUR_UBUNTU_SERVER_IP:9696`.
+- [ ] Navigate to `http://100.114.128.38:9696` (Tailscale IP).
 - [ ] Go to `Indexers` > `Add Indexer` (`+`).
 - [ ] Add your preferred indexers (e.g., `1337x` for public).
 - [ ] Test and save each indexer.
 
 ### 3.3. Sonarr (for TV Shows)
 
-- [ ] Navigate to `http://YOUR_UBUNTU_SERVER_IP:8989`.
+- [ ] Navigate to `http://100.114.128.38:8989` (Tailscale IP).
 - [ ] **Connect Download Client:**
   - Go to `Settings` > `Download Clients` > `Add` (`+`).
   - Select `qBittorrent`.
@@ -101,7 +103,7 @@ This guide provides a granular, step-by-step checklist for setting up your fully
 
 ### 3.4. Radarr (for Movies)
 
-- [ ] Navigate to `http://YOUR_UBUNTU_SERVER_IP:7878`.
+- [ ] Navigate to `http://100.114.128.38:7878` (Tailscale IP).
 - [ ] **Connect Download Client and Indexers** (follow the same steps as for Sonarr).
 - [ ] **Configure Root Folder:**
   - Go to `Settings` > `Media Management`.
@@ -110,7 +112,7 @@ This guide provides a granular, step-by-step checklist for setting up your fully
 
 ### 3.5. Readarr (for Books)
 
-- [ ] Navigate to `http://YOUR_UBUNTU_SERVER_IP:8787`.
+- [ ] Navigate to `http://100.114.128.38:8787` (Tailscale IP).
 - [ ] **Connect Download Client and Indexers** (follow the same steps as for Sonarr/Radarr).
 - [ ] **Configure Root Folder:**
   - Go to `Settings` > `Media Management`.
@@ -118,7 +120,7 @@ This guide provides a granular, step-by-step checklist for setting up your fully
 
 ### 3.6. Jellyfin
 
-- [ ] Navigate to `http://YOUR_UBUNTU_SERVER_IP:8096` and complete the startup wizard.
+- [ ] Navigate to `http://100.114.128.38:8096` (Tailscale IP) and complete the startup wizard.
 - [ ] **Add Media Libraries:**
   - Go to `Dashboard` > `Libraries` > `Add Media Library`.
   - **Content Type:** `Movies`

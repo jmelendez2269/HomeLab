@@ -24,18 +24,23 @@ You should see all 7 services with status "Up" or "running".
 
 ### 2. Access Service Web Interfaces
 
-Access each service through your browser using `http://YOUR_SERVER_IP:PORT`:
+**Server IP (Tailscale):** `100.114.128.38`
+
+Access each service through your browser using the Tailscale IP address. Tailscale provides secure, encrypted access from anywhere without needing to open ports on your router.
 
 | Service | Port | URL | Default Credentials |
 |---------|------|-----|---------------------|
-| **Jellyfin** | 8096 | `http://YOUR_SERVER_IP:8096` | Setup wizard on first access |
-| **qBittorrent** | 8080 | `http://YOUR_SERVER_IP:8080` | `admin` / `adminadmin` |
-| **Prowlarr** | 9696 | `http://YOUR_SERVER_IP:9696` | None (first-time setup) |
-| **Sonarr** | 8989 | `http://YOUR_SERVER_IP:8989` | None (first-time setup) |
-| **Radarr** | 7878 | `http://YOUR_SERVER_IP:7878` | None (first-time setup) |
-| **Readarr** | 8787 | `http://YOUR_SERVER_IP:8787` | None (first-time setup) |
+| **Jellyfin** | 8096 | `http://100.114.128.38:8096` | Setup wizard on first access |
+| **qBittorrent** | 8080 | `http://100.114.128.38:8080` | `admin` / `adminadmin` |
+| **Prowlarr** | 9696 | `http://100.114.128.38:9696` | None (first-time setup) |
+| **Sonarr** | 8989 | `http://100.114.128.38:8989` | None (first-time setup) |
+| **Radarr** | 7878 | `http://100.114.128.38:7878` | None (first-time setup) |
+| **Readarr** | 8787 | `http://100.114.128.38:8787` | None (first-time setup) |
 
-**Note:** Services behind gluetun (qBittorrent, Prowlarr, Sonarr, Radarr, Readarr) use the VPN connection. Jellyfin is directly accessible.
+**Note:** 
+- The IP address `100.114.128.38` is a **Tailscale IP** - this allows secure access from anywhere, not just your local network.
+- Services behind gluetun (qBittorrent, Prowlarr, Sonarr, Radarr, Readarr) use the VPN connection. Jellyfin is directly accessible.
+- Make sure Tailscale is running on both your server and the device you're accessing from.
 
 ---
 
@@ -43,7 +48,7 @@ Access each service through your browser using `http://YOUR_SERVER_IP:PORT`:
 
 ### Step 1: qBittorrent (Download Client)
 
-1. Navigate to `http://YOUR_SERVER_IP:8080`
+1. Navigate to `http://100.114.128.38:8080` (Tailscale IP)
 2. Login with `admin` / `adminadmin` and **change the password immediately**
 3. Go to `Tools` > `Options` > `Downloads`
 4. Set `Default Save Path` to exactly: `/downloads`
@@ -51,7 +56,7 @@ Access each service through your browser using `http://YOUR_SERVER_IP:PORT`:
 
 ### Step 2: Prowlarr (Indexer Manager)
 
-1. Navigate to `http://YOUR_SERVER_IP:9696`
+1. Navigate to `http://100.114.128.38:9696` (Tailscale IP)
 2. Go to `Indexers` > `Add Indexer` (`+` button)
 3. Add your preferred indexers (e.g., `1337x`, `EZTV`, `RARBG` for public trackers)
 4. Test and save each indexer
@@ -59,7 +64,7 @@ Access each service through your browser using `http://YOUR_SERVER_IP:PORT`:
 
 ### Step 3: Sonarr (TV Shows)
 
-1. Navigate to `http://YOUR_SERVER_IP:8989`
+1. Navigate to `http://100.114.128.38:8989` (Tailscale IP)
 2. **Connect Download Client:**
    - Go to `Settings` > `Download Clients` > `Add` (`+`)
    - Select `qBittorrent`
@@ -81,7 +86,7 @@ Access each service through your browser using `http://YOUR_SERVER_IP:PORT`:
 
 ### Step 4: Radarr (Movies)
 
-1. Navigate to `http://YOUR_SERVER_IP:7878`
+1. Navigate to `http://100.114.128.38:7878` (Tailscale IP)
 2. **Connect Download Client:**
    - Same steps as Sonarr (use `qbittorrent` as host, port `8080`)
 3. **Connect Indexers:**
@@ -94,7 +99,7 @@ Access each service through your browser using `http://YOUR_SERVER_IP:PORT`:
 
 ### Step 5: Readarr (Books)
 
-1. Navigate to `http://YOUR_SERVER_IP:8787`
+1. Navigate to `http://100.114.128.38:8787` (Tailscale IP)
 2. **Connect Download Client:**
    - Same steps as Sonarr/Radarr
 3. **Connect Indexers:**
@@ -106,7 +111,7 @@ Access each service through your browser using `http://YOUR_SERVER_IP:PORT`:
 
 ### Step 6: Jellyfin (Media Server)
 
-1. Navigate to `http://YOUR_SERVER_IP:8096`
+1. Navigate to `http://100.114.128.38:8096` (Tailscale IP)
 2. Complete the initial setup wizard:
    - Choose your language
    - Create an admin account
