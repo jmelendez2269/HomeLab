@@ -31,11 +31,15 @@ Access each service through your browser using the Tailscale IP address. Tailsca
 | Service | Port | URL | Default Credentials |
 |---------|------|-----|---------------------|
 | **Jellyfin** | 8096 | `http://100.114.128.38:8096` | Setup wizard on first access |
-| **qBittorrent** | 8080 | `http://100.114.128.38:8080` | `admin` / `adminadmin` |
+| **qBittorrent** | 8081 | `http://100.114.128.38:8081` | `admin` / (check logs for temp password) |
 | **Prowlarr** | 9696 | `http://100.114.128.38:9696` | None (first-time setup) |
 | **Sonarr** | 8989 | `http://100.114.128.38:8989` | None (first-time setup) |
 | **Radarr** | 7878 | `http://100.114.128.38:7878` | None (first-time setup) |
 | **Readarr** | 8787 | `http://100.114.128.38:8787` | None (first-time setup) |
+
+**Important Notes:**
+- **qBittorrent uses port 8081** (not 8080). Check your `.env` file - if `QBITTORRENT_PORT=8080`, change it to `8081` or update the docker-compose.yml port mapping.
+- **Readarr port 8787** may not be mapped if `READARR_PORT` isn't set in your `.env` file. Verify it's set: `READARR_PORT=8787`
 
 **Note:** 
 - The IP address `100.114.128.38` is a **Tailscale IP** - this allows secure access from anywhere, not just your local network.
@@ -48,8 +52,12 @@ Access each service through your browser using the Tailscale IP address. Tailsca
 
 ### Step 1: qBittorrent (Download Client)
 
-1. Navigate to `http://100.114.128.38:8080` (Tailscale IP)
-2. Login with `admin` / `adminadmin` and **change the password immediately**
+1. Navigate to `http://100.114.128.38:8081` (Tailscale IP) - **Note: Use port 8081, not 8080**
+2. Login credentials:
+   - Username: `admin`
+   - Password: Check container logs for temporary password: `sudo docker compose logs qbittorrent | grep password`
+   - If no password was set, try `adminadmin`
+   - **Change the password immediately** after first login
 3. Go to `Tools` > `Options` > `Downloads`
 4. Set `Default Save Path` to exactly: `/downloads`
 5. Click `Apply` and `OK`
@@ -68,16 +76,41 @@ Access each service through your browser using the Tailscale IP address. Tailsca
 2. **Connect Download Client:**
    - Go to `Settings` > `Download Clients` > `Add` (`+`)
    - Select `qBittorrent`
-   - **Host:** `qbittorrent`
-   - **Port:** `8080`
-   - Enter your qBittorrent username and password
-   - Test and save
-3. **Connect Indexers:**
-   - Go to `Settings` > `Indexers` > `Add` (`+`)
-   - Select `Prowlarr`
-   - **Prowlarr Server:** `http://prowlarr:9696`
-   - **API Key:** Paste the API key from Prowlarr
-   - Test and save
+   - **Host:** `localhost` or `127.0.0.1` (NOT `qbittorrent` - since both services share gluetun's network namespace)
+   - **Port:** `8081` (use 8081, not 8080)
+   - **URL Base:** Leave empty (unless you've configured a base path in qBittorrent)
+   - **Username:** `admin`
+   - **Password:** Enter your qBittorrent password
+   - **Category:** `tv-sonarr` (optional but recommended - helps organize downloads)
+   - **Post Import Category:** Leave empty (or set to `tv-sonarr` if you want to keep the category after import)
+   - **Priority:** `Normal` (or choose based on your preference)
+   - Click **Test** to verify the connection
+   - Click **Save** once the test succeeds
+3. **Connect Indexers (Recommended Method - Use Prowlarr Apps):**
+   
+   **This is the easiest and most reliable method. Configure Prowlarr to connect to Sonarr:**
+   - Open Prowlarr: `http://100.114.128.38:9696`
+   - Go to `Settings` > `Apps`
+   - Click `Add` (`+`) button
+   - Select `Sonarr`
+   - Fill in the fields:
+     - **Name:** `Sonarr` (or any name you prefer)
+     - **Prowlarr Server:** `http://localhost:9696` (use localhost since both services share gluetun's network)
+     - **Sonarr Server:** `http://localhost:8989` (use localhost since both services share gluetun's network)
+     - **API Key:** Get this from Sonarr: Go to Sonarr `Settings` > `General` > `API Key` and copy it
+     - **Sync App Indexers:** ✅ **Check this box** (this automatically syncs all Prowlarr indexers to Sonarr)
+   - Click `Test` to verify the connection
+   - Click `Save` once the test succeeds
+   - **Result:** All your Prowlarr indexers will automatically appear in Sonarr - no manual Torznab configuration needed!
+   
+   **Alternative: Manual Torznab Method (if Apps method doesn't work):**
+   - In Sonarr, go to `Settings` > `Indexers` > `Add` (`+`)
+   - Select `Torznab`
+   - **Name:** `Prowlarr`
+   - **URL:** `http://localhost:9696`
+   - **API Path:** `/prowlarr/api` (or `/api` if that fails)
+   - **API Key:** From Prowlarr `Settings` > `General` > `API Key`
+   - Click `Test` then `Save`
 4. **Configure Root Folder:**
    - Go to `Settings` > `Media Management`
    - Click `Add Root Folder`
@@ -88,9 +121,17 @@ Access each service through your browser using the Tailscale IP address. Tailsca
 
 1. Navigate to `http://100.114.128.38:7878` (Tailscale IP)
 2. **Connect Download Client:**
-   - Same steps as Sonarr (use `qbittorrent` as host, port `8080`)
-3. **Connect Indexers:**
-   - Same steps as Sonarr (use Prowlarr API key)
+   - Same steps as Sonarr, but use:
+     - **Category:** `movies-radarr` (instead of `tv-sonarr`)
+     - **Post Import Category:** Leave empty or set to `movies-radarr`
+3. **Connect Indexers (Recommended - Use Prowlarr Apps):**
+   - **Best method:** In Prowlarr, go to `Settings` > `Apps` > `Add` > Select `Radarr`
+     - **Prowlarr Server:** `http://localhost:9696`
+     - **Radarr Server:** `http://localhost:7878`
+     - **API Key:** Get from Radarr: `Settings` > `General` > `API Key`
+     - **Sync App Indexers:** ✅ Check this box
+     - Click `Test` then `Save`
+   - **Alternative:** Same manual Torznab method as Sonarr (see Sonarr section above)
 4. **Configure Root Folder:**
    - Go to `Settings` > `Media Management`
    - Click `Add Root Folder`
@@ -101,9 +142,17 @@ Access each service through your browser using the Tailscale IP address. Tailsca
 
 1. Navigate to `http://100.114.128.38:8787` (Tailscale IP)
 2. **Connect Download Client:**
-   - Same steps as Sonarr/Radarr
-3. **Connect Indexers:**
-   - Same steps as Sonarr/Radarr (use Prowlarr API key)
+   - Same steps as Sonarr/Radarr, but use:
+     - **Category:** `books-readarr` (instead of `tv-sonarr`)
+     - **Post Import Category:** Leave empty or set to `books-readarr`
+3. **Connect Indexers (Recommended - Use Prowlarr Apps):**
+   - **Best method:** In Prowlarr, go to `Settings` > `Apps` > `Add` > Select `Readarr`
+     - **Prowlarr Server:** `http://localhost:9696`
+     - **Readarr Server:** `http://localhost:8787`
+     - **API Key:** Get from Readarr: `Settings` > `General` > `API Key`
+     - **Sync App Indexers:** ✅ Check this box
+     - Click `Test` then `Save`
+   - **Alternative:** Same manual Torznab method as Sonarr (see Sonarr section above)
 4. **Configure Root Folder:**
    - Go to `Settings` > `Media Management`
    - Click `Add Root Folder`
@@ -198,12 +247,96 @@ docker compose ps
 
 ## 🆘 Troubleshooting
 
-If you encounter issues:
+### Connection Refused Errors (ERR_CONNECTION_REFUSED)
+
+If you get "connection refused" when accessing services:
+
+1. **Verify Tailscale is running:**
+   - On your Windows computer, check if Tailscale is running (system tray icon)
+   - On your Linux server, check: `sudo tailscale status`
+   - Both devices must be connected to the same Tailscale network
+   - Test connectivity: `ping 100.114.128.38` from Windows Command Prompt
+
+2. **Verify containers are running:**
+   ```bash
+   ssh your_username@100.114.128.38
+   cd ~/media-stack
+   docker compose ps
+   ```
+   All services should show "Up" status
+
+3. **Check gluetun VPN connection (IMPORTANT):**
+   ```bash
+   # On the Linux server (use sudo if you get permission errors)
+   sudo docker compose logs gluetun | tail -50
+   ```
+   Look for messages like "VPN is connected" or "Public IP: XXX". If gluetun's VPN isn't connected, services behind it won't be accessible.
+   
+   **Note:** Services behind gluetun (qBittorrent, Prowlarr, Sonarr, Radarr, Readarr) require gluetun's VPN to be connected. If you haven't configured VPN credentials in your `.env` file, gluetun won't connect.
+   
+   **If you get "permission denied" errors:** Use `sudo` before docker commands, or log out and back in after running `sudo usermod -aG docker $USER` to apply docker group membership.
+
+4. **Check if ports are listening:**
+   ```bash
+   # On the Linux server
+   sudo ss -tulpn | grep 8080
+   sudo ss -tulpn | grep 9696
+   ```
+   If nothing shows up, the services aren't binding to the network interface.
+
+5. **Check container logs for errors:**
+   ```bash
+   # Use sudo if you get permission errors
+   sudo docker compose logs qbittorrent
+   sudo docker compose logs gluetun
+   ```
+
+6. **Verify gluetun is exposing ports correctly:**
+   ```bash
+   # Check gluetun container ports (use sudo if needed)
+   sudo docker inspect gluetun | grep -A 10 "Ports"
+   ```
+
+7. **Check firewall on Linux server:**
+   ```bash
+   sudo ufw status
+   # If firewall is active, you may need to allow Tailscale traffic
+   sudo ufw allow in on tailscale0
+   ```
+
+8. **If gluetun VPN is connected but services still aren't accessible:**
+   - Check if ports are actually listening: `sudo ss -tulpn | grep -E "(8080|8081|9696|8989|7878|8787)"`
+   - Try restarting the services: `sudo docker compose restart qbittorrent prowlarr sonarr radarr readarr`
+   - Verify gluetun is exposing the ports: `sudo docker port gluetun`
+   - Check if services are binding to the correct interface (should be 0.0.0.0, not 127.0.0.1)
+   - Try accessing from the server itself: `curl http://localhost:8081` (should work if service is running)
+
+9. **If Sonarr/Radarr/Readarr can't connect to qBittorrent:**
+   - Verify qBittorrent is running: `sudo docker compose ps qbittorrent`
+   - Check qBittorrent logs: `sudo docker compose logs qbittorrent | tail -20`
+   - Test connection from within gluetun network: `sudo docker exec gluetun wget -O- http://qbittorrent:8081 2>&1 | head -5`
+   - Verify qBittorrent is listening on the correct port inside the container:
+     ```bash
+     sudo docker exec qbittorrent netstat -tulpn | grep 8081
+     # or
+     sudo docker exec qbittorrent ss -tulpn | grep 8081
+     ```
+   - Check if WEBUI_PORT matches: Look at qBittorrent logs for "WebUI will be started" message
+   - **IMPORTANT:** Use `localhost` or `127.0.0.1` instead of `qbittorrent` as the host (since both services share gluetun's network namespace, container names don't resolve - use localhost)
+   - Restart both services: `sudo docker compose restart qbittorrent sonarr`
+
+10. **If gluetun VPN isn't configured:**
+   - Services behind gluetun require VPN credentials in your `.env` file
+   - If you don't want to use a VPN, you'll need to modify the docker-compose.yml to remove `network_mode: "service:gluetun"` and add direct port mappings
+   - Alternatively, access Jellyfin (port 8096) which doesn't use gluetun
+
+### Other Common Issues
 
 1. Check container logs: `docker compose logs [service_name]`
 2. Verify containers are running: `docker compose ps`
 3. Check the `troubleshooting_log.md` file for common issues
 4. Ensure your `.env` file has correct values (especially PUID/PGID)
+5. Restart services if needed: `docker compose restart [service_name]`
 
 ---
 
