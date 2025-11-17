@@ -17,7 +17,7 @@ When attempting to add a root folder (e.g., `/movies`) in Radarr, the applicatio
     *   Connected via SSH and used the `id docker_user` command to find the correct user and group IDs.
     *   Found `uid=1027` and `gid=100`.
     *   Updated the `.env` file with `PUID=1027` and `PGID=100`.
-    *   Recreated the containers with `docker-compose down` and `docker-compose up -d`.
+    *   Recreated the containers with `docker-compose down` and `docker compose up -d`.
     *   The error persisted.
 
 4.  **Corrected `docker-compose.yml` Variables:**

@@ -308,7 +308,7 @@ All the following commands are to be run on the Ubuntu server.
 
 ### 8.1. Launch the Stack
 
-1.  From your SSH session in the `~/media-stack` directory, run the command: `docker-compose up -d`
+1.  From your SSH session in the `~/media-stack` directory, run the command: `docker compose up -d`
 2.  This will download all the container images and start them. You can view the logs for all containers by running `docker-compose logs -f`.
 
 ### 8.2. Initial Service Setup
