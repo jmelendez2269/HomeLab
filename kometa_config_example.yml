@@ -74,4 +74,6 @@ settings:
   missing_only_released: false
   log_level: info
   log_file: config/logs/kometa.log
+  tmdb:
+    apikey: YOUR_TMDB_API_KEY  # Get your free API key from https://www.themoviedb.org/settings/api
 

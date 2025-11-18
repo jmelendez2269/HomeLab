@@ -2,13 +2,40 @@
 
 ## Quick Setup Instructions
 
-### Step 1: Get Your Jellyfin API Key
+### Step 1: Get Your API Keys
+
+#### Get Your Jellyfin API Key
 
 1. Open Jellyfin: `http://100.114.128.38:8096`
 2. Go to **Dashboard** (gear icon) > **API Keys**
 3. Click the **`+`** button to create a new API key
 4. Name it: `Kometa`
 5. **Copy the API key** - you'll need it in the next step
+
+#### Get Your TMDb API Key (Optional but Recommended)
+
+TMDb (The Movie Database) API key is needed for:
+- Creating collections based on TMDb data (genres, keywords, awards, etc.)
+- Adding tags based on TMDb keywords
+- Using `tmdb_discover` and `tmdb_keyword` features in Kometa
+
+**Steps to get a free TMDb API key:**
+
+1. Go to [TMDb](https://www.themoviedb.org/)
+2. Click **Sign Up** (or **Log In** if you already have an account)
+3. Create a free account (or log in)
+4. Go to your **Account Settings** (click your profile icon > **Settings**)
+5. Click on **API** in the left sidebar
+6. Under **API Key (v3 auth)**, click **Request an API Key**
+7. Fill out the form:
+   - **Type of use:** Select "Developer" (for personal use)
+   - **Application name:** Enter "Kometa" or "Jellyfin Meta Manager"
+   - **Application URL:** Enter your Jellyfin URL (e.g., `http://100.114.128.38:8096`) or leave blank
+   - **Application summary:** Enter "Personal media server automation"
+8. Accept the terms and click **Submit**
+9. **Copy your API key** - you'll need to add it to your Kometa config
+
+**Note:** TMDb API keys are free for personal use. The approval process is usually instant or takes a few minutes.
 
 ### Step 2: Create Kometa Directory on Your Linux Server
 
@@ -55,16 +82,31 @@ nano config/tv.yml
 # Save and exit
 ```
 
-### Step 4: Update the API Key
+### Step 4: Update the API Keys
 
 Edit the `config.yml` file and replace all instances of `YOUR_API_KEY` with your actual Jellyfin API key:
 
 ```bash
 nano ~/kometa/config.yml
 # Use Ctrl+W to search for "YOUR_API_KEY"
-# Replace each occurrence with your actual API key
+# Replace each occurrence with your actual Jellyfin API key
 # Save and exit
 ```
+
+**If you want to use TMDb features** (collections based on TMDb data, tags from keywords, etc.), you also need to add your TMDb API key to the config. Add this to your `config.yml` file under the `settings` section:
+
+```yaml
+settings:
+  cache: true
+  cache_expiration: 60
+  missing_only_released: false
+  log_level: info
+  log_file: config/logs/kometa.log
+  tmdb:
+    apikey: YOUR_TMDB_API_KEY  # Add your TMDb API key here
+```
+
+Replace `YOUR_TMDB_API_KEY` with the API key you got from TMDb.
 
 ### Step 5: Verify Library Names Match
 
@@ -134,6 +176,98 @@ which jellyfin-meta-manager
 - Make sure you have read/write access to the `~/kometa` directory
 - Check file permissions: `chmod 644 ~/kometa/config.yml`
 
+## Using TMDb with Kometa
+
+### What TMDb is Used For
+
+TMDb (The Movie Database) provides rich metadata that Kometa can use to:
+
+1. **Create Collections Based on TMDb Data:**
+   - Genre-based collections (e.g., all Sci-Fi movies)
+   - Decade collections (e.g., 80s movies, 90s movies)
+   - Award winners (e.g., Oscar winners, Golden Globe winners)
+   - Keyword-based collections (e.g., "time travel", "heist", "superhero")
+
+2. **Add Tags Based on TMDb Keywords:**
+   - Automatically tag movies based on TMDb keywords
+   - Examples: "based on book", "time travel", "heist", "superhero"
+
+### Example TMDb Collections
+
+Add these to your `config/movies.yml` file:
+
+```yaml
+collections:
+  # Decade Collections
+  80s Movies:
+    tmdb_discover:
+      primary_release_date.gte: 1980-01-01
+      primary_release_date.lte: 1989-12-31
+    collection_order: release
+  
+  90s Movies:
+    tmdb_discover:
+      primary_release_date.gte: 1990-01-01
+      primary_release_date.lte: 1999-12-31
+    collection_order: release
+  
+  # Award Winners
+  Oscar Winners:
+    tmdb_discover:
+      with_awards: true
+      primary_release_date.gte: 1929-01-01
+    collection_order: release
+  
+  # Genre-based (using TMDb genre IDs)
+  Sci-Fi Movies:
+    tmdb_discover:
+      with_genres: [878]  # Sci-Fi genre ID
+    collection_order: release
+```
+
+### Example TMDb Tags
+
+Add these to your `config/movies.yml` file:
+
+```yaml
+tags:
+  Based on a Book:
+    tmdb_keyword: based on book
+  
+  Time Travel:
+    tmdb_keyword: time travel
+  
+  Heist:
+    tmdb_keyword: heist
+  
+  Superhero:
+    tmdb_keyword: superhero
+```
+
+### TMDb Genre IDs Reference
+
+Common TMDb genre IDs you might use:
+- **Action:** 28
+- **Adventure:** 12
+- **Animation:** 16
+- **Comedy:** 35
+- **Crime:** 80
+- **Documentary:** 99
+- **Drama:** 18
+- **Family:** 10751
+- **Fantasy:** 14
+- **History:** 36
+- **Horror:** 27
+- **Music:** 10402
+- **Mystery:** 9648
+- **Romance:** 10749
+- **Sci-Fi:** 878
+- **Thriller:** 53
+- **War:** 10752
+- **Western:** 37
+
+For a complete list, see [TMDb Genre List](https://www.themoviedb.org/talk/5daf6eb0ae36680011d0e111).
+
 ## Next Steps
 
 Once Kometa is working, you can:
@@ -141,6 +275,7 @@ Once Kometa is working, you can:
 2. Add tags based on TMDb data
 3. Connect Trakt lists for curated collections
 4. Customize collection ordering and display
+5. Combine TMDb and Trakt lists for comprehensive automation
 
 ## Trakt Lists Resources
 
