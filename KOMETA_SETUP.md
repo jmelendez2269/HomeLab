@@ -146,6 +146,10 @@ Once Kometa is working, you can:
 
 ### Useful Trakt Lists for Collections
 
+**Official Trakt Community Lists:**
+- [Trakt Community Lists - TV Shows](https://trakt.tv/shows/community/lists) - Browse thousands of curated TV show lists sorted by popularity, reactions, and more. Includes top-rated shows, genre collections, and decade lists.
+- [Trakt Community Lists - Movies](https://trakt.tv/movies/community/lists) - Browse curated movie lists from the Trakt community.
+
 **Reddit Community Lists:**
 - [My Trakt Lists - Useful for Kodi Addons](https://www.reddit.com/r/Addons4Kodi/comments/116961i/my_trakt_lists_hopefully_they_will_be_useful_for/) - A comprehensive collection of Trakt lists organized by genre, mood, and theme. Great source for finding public lists to use in Kometa.
 

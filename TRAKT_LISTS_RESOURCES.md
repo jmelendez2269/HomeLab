@@ -4,6 +4,20 @@ This document contains useful resources for finding Trakt lists to use with Kome
 
 ## Community Resources
 
+### Trakt.tv Official Community Lists
+
+**Trakt Community Lists - TV Shows**
+- **URL:** https://trakt.tv/shows/community/lists
+- **Description:** Trakt's official community lists page for TV shows. Browse thousands of curated lists organized by popularity, reactions, comments, and update date. Lists include top-rated shows, genre collections, decade lists, and more.
+- **Use Case:** Perfect for finding popular, well-maintained Trakt lists to use in Kometa. You can sort by popularity, reactions, or number of items to find the best lists.
+- **Examples from the page:**
+  - Trakt: Popular TV Shows (250 items, 821 likes)
+  - Top 100 TV Comedy Shows (99 items, 138 likes)
+  - BBC Culture - The 100 greatest TV series of the 21st Century (100 items, 98 likes)
+  - Rolling Stone's 100 Best Sitcoms of All Time (100 items, 70 likes)
+
+**Note:** Trakt also has community lists for movies at https://trakt.tv/movies/community/lists
+
 ### Reddit
 
 **My Trakt Lists - Useful for Kodi Addons**
