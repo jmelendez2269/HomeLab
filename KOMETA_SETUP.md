@@ -142,5 +142,25 @@ Once Kometa is working, you can:
 3. Connect Trakt lists for curated collections
 4. Customize collection ordering and display
 
+## Trakt Lists Resources
+
+### Useful Trakt Lists for Collections
+
+**Reddit Community Lists:**
+- [My Trakt Lists - Useful for Kodi Addons](https://www.reddit.com/r/Addons4Kodi/comments/116961i/my_trakt_lists_hopefully_they_will_be_useful_for/) - A comprehensive collection of Trakt lists organized by genre, mood, and theme. Great source for finding public lists to use in Kometa.
+
+**How to Use Trakt Lists in Kometa:**
+
+1. Find a Trakt list you like (from the Reddit post or Trakt.tv)
+2. Get the list URL (e.g., `https://trakt.tv/users/USERNAME/lists/list-name`)
+3. Add it to your `config/movies.yml`:
+
+```yaml
+collections:
+  Feel Good Movies:
+    trakt_list: https://trakt.tv/users/USERNAME/lists/feel-good-movies
+    collection_order: release
+```
+
 For more advanced configuration, see the [Official Kometa Documentation](https://kometa.wiki/en/latest/).
 

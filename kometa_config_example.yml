@@ -6,58 +6,56 @@ libraries:
   Movies:
     - Action:
         url: http://localhost:8096
-        token: YOUR_API_KEY
+        token: ab205199d77548eea501cd618767285a
         libraries: [Action]
         collection_files:
           - file: config/movies.yml
     
     - Comedy:
         url: http://localhost:8096
-        token: YOUR_API_KEY
+        token: ab205199d77548eea501cd618767285a
         libraries: [Comedy]
         collection_files:
           - file: config/movies.yml
     
     - Documentaries:
         url: http://localhost:8096
-        token: YOUR_API_KEY
+        token: ab205199d77548eea501cd618767285a
         libraries: [Documentaries]
         collection_files:
           - file: config/movies.yml
     
     - Drama:
         url: http://localhost:8096
-        token: YOUR_API_KEY
+        token: ab205199d77548eea501cd618767285a
         libraries: [Drama]
         collection_files:
           - file: config/movies.yml
     
     - Family:
         url: http://localhost:8096
-        token: YOUR_API_KEY
+        token: ab205199d77548eea501cd618767285a
         libraries: [Family]
         collection_files:
           - file: config/movies.yml
     
     - Horror:
         url: http://localhost:8096
-        token: YOUR_API_KEY
+        token: ab205199d77548eea501cd618767285a
         libraries: [Horror]
         collection_files:
           - file: config/movies.yml
     
     - Sci-Fi:
         url: http://localhost:8096
-        token: YOUR_API_KEY
+        token: ab205199d77548eea501cd618767285a
         libraries: [Sci-Fi]
         collection_files:
           - file: config/movies.yml
     
-    # Note: If you have additional genres, add them here following the same pattern
-    
     - Thriller:
         url: http://localhost:8096
-        token: YOUR_API_KEY
+        token: ab205199d77548eea501cd618767285a
         libraries: [Thriller]
         collection_files:
           - file: config/movies.yml
@@ -65,7 +63,7 @@ libraries:
   TV Shows:
     - TV Shows:
         url: http://localhost:8096
-        token: YOUR_API_KEY
+        token: ab205199d77548eea501cd618767285a
         libraries: [TV Shows]
         collection_files:
           - file: config/tv.yml
