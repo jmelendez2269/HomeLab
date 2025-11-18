@@ -1,0 +1,18 @@
+# Kometa TV Shows Collection Configuration
+# Place this file at: ~/kometa/config/tv.yml
+# This file defines collections and tags for your TV Shows library
+
+# Example Collections - Uncomment and customize as needed
+
+# collections:
+#   Popular TV Shows:
+#     trakt_list: https://trakt.tv/users/USERNAME/lists/popular-tv
+#     collection_order: release
+#   
+#   Sci-Fi TV Shows:
+#     tmdb_discover:
+#       with_genres: [10765]  # Sci-Fi & Fantasy genre ID
+#     collection_order: release
+
+# For now, leave this file mostly empty until you're ready to configure collections
+

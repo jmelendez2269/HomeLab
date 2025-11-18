@@ -1,0 +1,79 @@
+# Kometa (Jellyfin Meta Manager) Configuration File
+# Place this file at: ~/kometa/config.yml
+# Replace YOUR_API_KEY with your actual Jellyfin API key from Dashboard > API Keys
+
+libraries:
+  Movies:
+    - Action:
+        url: http://localhost:8096
+        token: YOUR_API_KEY
+        libraries: [Action]
+        collection_files:
+          - file: config/movies.yml
+    
+    - Comedy:
+        url: http://localhost:8096
+        token: YOUR_API_KEY
+        libraries: [Comedy]
+        collection_files:
+          - file: config/movies.yml
+    
+    - Documentaries:
+        url: http://localhost:8096
+        token: YOUR_API_KEY
+        libraries: [Documentaries]
+        collection_files:
+          - file: config/movies.yml
+    
+    - Drama:
+        url: http://localhost:8096
+        token: YOUR_API_KEY
+        libraries: [Drama]
+        collection_files:
+          - file: config/movies.yml
+    
+    - Family:
+        url: http://localhost:8096
+        token: YOUR_API_KEY
+        libraries: [Family]
+        collection_files:
+          - file: config/movies.yml
+    
+    - Horror:
+        url: http://localhost:8096
+        token: YOUR_API_KEY
+        libraries: [Horror]
+        collection_files:
+          - file: config/movies.yml
+    
+    - Sci-Fi:
+        url: http://localhost:8096
+        token: YOUR_API_KEY
+        libraries: [Sci-Fi]
+        collection_files:
+          - file: config/movies.yml
+    
+    # Note: If you have additional genres, add them here following the same pattern
+    
+    - Thriller:
+        url: http://localhost:8096
+        token: YOUR_API_KEY
+        libraries: [Thriller]
+        collection_files:
+          - file: config/movies.yml
+
+  TV Shows:
+    - TV Shows:
+        url: http://localhost:8096
+        token: YOUR_API_KEY
+        libraries: [TV Shows]
+        collection_files:
+          - file: config/tv.yml
+
+settings:
+  cache: true
+  cache_expiration: 60
+  missing_only_released: false
+  log_level: info
+  log_file: config/logs/kometa.log
+

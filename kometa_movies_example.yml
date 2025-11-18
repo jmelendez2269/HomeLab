@@ -1,0 +1,58 @@
+# Kometa Movies Collection Configuration
+# Place this file at: ~/kometa/config/movies.yml
+# This file defines collections and tags for your movie libraries
+
+# Example Collections - Uncomment and customize as needed
+
+# Collections based on Trakt lists
+# collections:
+#   Feel Good Movies:
+#     trakt_list: https://trakt.tv/users/USERNAME/lists/feel-good-movies
+#     collection_order: release
+#   
+#   Mind-Bending Movies:
+#     trakt_list: https://trakt.tv/users/USERNAME/lists/mind-bending
+#     collection_order: release
+#   
+#   Date Night Movies:
+#     trakt_list: https://trakt.tv/users/USERNAME/lists/date-night
+#     collection_order: release
+
+# Collections based on TMDb data
+# collections:
+#   Oscar Winners:
+#     tmdb_discover:
+#       with_genres: []
+#       primary_release_date.gte: 1929-01-01
+#       with_awards: true
+#     collection_order: release
+#   
+#   80s Movies:
+#     tmdb_discover:
+#       primary_release_date.gte: 1980-01-01
+#       primary_release_date.lte: 1989-12-31
+#     collection_order: release
+#   
+#   90s Movies:
+#     tmdb_discover:
+#       primary_release_date.gte: 1990-01-01
+#       primary_release_date.lte: 1999-12-31
+#     collection_order: release
+
+# Tags based on TMDb keywords
+# tags:
+#   Based on a Book:
+#     tmdb_keyword: based on book
+#   
+#   Time Travel:
+#     tmdb_keyword: time travel
+#   
+#   Heist:
+#     tmdb_keyword: heist
+#   
+#   Superhero:
+#     tmdb_keyword: superhero
+
+# For now, leave this file mostly empty until you're ready to configure collections
+# You can add collections and tags later as you learn more about Kometa
+

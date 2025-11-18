@@ -119,6 +119,32 @@ Access each service through your browser using the Tailscale IP address. Tailsca
 
 ### Step 4: Radarr (Movies)
 
+**First, create genre folders on your NAS:**
+
+You need to create genre subfolders inside your `/mnt/nas/movies/` directory. You can do this in two ways:
+
+**Option 1: Via SSH on Linux Server (Recommended):**
+```bash
+# SSH into your server
+ssh your_username@100.114.128.38
+
+# Create genre folders (adjust genres to your preference)
+sudo mkdir -p /mnt/nas/movies/{action,comedy,drama,horror,sci-fi,thriller,romance,adventure,animation,crime,fantasy,mystery,western,war,biography,history,music,sport,family}
+
+# Verify folders were created
+ls -la /mnt/nas/movies/
+```
+
+**Option 2: Via Synology File Station:**
+- Open Synology File Station (web interface)
+- Navigate to `media` > `movies`
+- Create new folders for each genre (e.g., `action`, `comedy`, `drama`, etc.)
+
+**Common genre folders to create:**
+- action, adventure, animation, biography, comedy, crime, drama, family, fantasy, history, horror, music, mystery, romance, sci-fi, sport, thriller, war, western
+
+**Now configure Radarr:**
+
 1. Navigate to `http://100.114.128.38:7878` (Tailscale IP)
 2. **Connect Download Client:**
    - Same steps as Sonarr, but use:
@@ -136,10 +162,13 @@ Access each service through your browser using the Tailscale IP address. Tailsca
    - Go to `Settings` > `Media Management`
    - Click `Add Root Folder`
    - Enter the path: `/movies`
-   - **Note:** When adding movies, you'll need to manually edit paths to place them in genre subfolders (e.g., `/movies/action`, `/movies/comedy`)
+   - **Note:** When adding movies in Radarr, you'll need to manually edit the path to place them in the correct genre subfolder (e.g., `/movies/action`, `/movies/comedy`)
 
-### Step 5: Readarr (Books)
+### Step 5: Readarr (Books) - OPTIONAL
 
+**Note:** Readarr is optional and can be configured later. You can skip this step and move on to Jellyfin.
+
+If you want to configure Readarr later:
 1. Navigate to `http://100.114.128.38:8787` (Tailscale IP)
 2. **Connect Download Client:**
    - Same steps as Sonarr/Radarr, but use:
@@ -158,7 +187,9 @@ Access each service through your browser using the Tailscale IP address. Tailsca
    - Click `Add Root Folder`
    - Enter the path: `/books`
 
-### Step 6: Jellyfin (Media Server)
+### Step 6: Jellyfin (Media Server) - NEXT STEP
+
+**You can skip Readarr for now and move directly to Jellyfin setup.**
 
 1. Navigate to `http://100.114.128.38:8096` (Tailscale IP)
 2. Complete the initial setup wizard:
@@ -168,19 +199,34 @@ Access each service through your browser using the Tailscale IP address. Tailsca
 
 3. **Add Media Libraries:**
    - Go to `Dashboard` > `Libraries` > `Add Media Library`
-   - **For Movies (by genre):**
-     - Content Type: `Movies`
-     - Display Name: `Action` (or your first genre)
-     - Folders: Add `/data/movies/action`
-     - Repeat for each genre folder you created
-   - **For TV Shows:**
-     - Content Type: `TV Shows`
-     - Display Name: `TV Shows`
-     - Folders: Add `/data/tv`
-   - **For Books:**
-     - Content Type: `Books`
-     - Display Name: `Books`
-     - Folders: Add `/data/books`
+   
+   **For Movies (by genre) - Create one library per genre:**
+   - Click `Add Media Library` button
+   - **Content Type:** Select `Movies`
+   - **Display Name:** Enter the genre name (e.g., `Action`, `Comedy`, `Drama`, etc.)
+   - **Folders:** Click `+` and add the path: `/data/movies/action` (replace `action` with the genre)
+   - Click `OK` to save this library
+   - **Repeat this process** for each genre folder you created:
+     - Click `Add Media Library` again
+     - Select `Movies`
+     - Enter the genre name as Display Name
+     - Add the corresponding folder path (e.g., `/data/movies/comedy`, `/data/movies/drama`, etc.)
+     - Click `OK`
+   - You'll end up with multiple movie libraries, one for each genre
+   
+   **For TV Shows:**
+   - Click `Add Media Library`
+   - **Content Type:** Select `TV Shows`
+   - **Display Name:** `TV Shows`
+   - **Folders:** Click `+` and add: `/data/tv`
+   - Click `OK`
+   
+   **For Books (Optional - if you configure Readarr later):**
+   - Click `Add Media Library`
+   - **Content Type:** Select `Books`
+   - **Display Name:** `Books`
+   - **Folders:** Click `+` and add: `/data/books`
+   - Click `OK`
 
 4. **Create User Accounts:**
    - Go to `Dashboard` > `Users`
@@ -325,7 +371,29 @@ If you get "connection refused" when accessing services:
    - **IMPORTANT:** Use `localhost` or `127.0.0.1` instead of `qbittorrent` as the host (since both services share gluetun's network namespace, container names don't resolve - use localhost)
    - Restart both services: `sudo docker compose restart qbittorrent sonarr`
 
-10. **If gluetun VPN isn't configured:**
+10. **If Readarr port 8787 is not accessible (ERR_CONNECTION_REFUSED):**
+   - **Check if READARR_PORT is set in .env file:**
+     ```bash
+     cd ~/media-stack
+     cat .env | grep READARR_PORT
+     ```
+     - If it's missing, add: `READARR_PORT=8787`
+   - **Verify gluetun is exposing the port:**
+     ```bash
+     sudo docker port gluetun | grep 8787
+     ```
+     - If nothing shows up, the port isn't mapped
+   - **Restart gluetun and readarr after adding READARR_PORT:**
+     ```bash
+     sudo docker compose restart gluetun readarr
+     ```
+   - **Check if the port is listening:**
+     ```bash
+     sudo ss -tulpn | grep 8787
+     ```
+     - If nothing shows, the service isn't binding to the port
+
+11. **If gluetun VPN isn't configured:**
    - Services behind gluetun require VPN credentials in your `.env` file
    - If you don't want to use a VPN, you'll need to modify the docker-compose.yml to remove `network_mode: "service:gluetun"` and add direct port mappings
    - Alternatively, access Jellyfin (port 8096) which doesn't use gluetun
@@ -344,13 +412,14 @@ If you get "connection refused" when accessing services:
 
 You'll know everything is working when:
 
-- [ ] All 7 containers are running
-- [ ] You can access all web interfaces
+- [ ] All containers are running (Readarr is optional)
+- [ ] You can access all web interfaces (Readarr can be skipped)
 - [ ] qBittorrent can download files
 - [ ] Prowlarr has indexers configured
-- [ ] Sonarr/Radarr/Readarr are connected to qBittorrent and Prowlarr
+- [ ] Sonarr/Radarr are connected to qBittorrent and Prowlarr
 - [ ] Jellyfin can scan and display your media libraries
 - [ ] You can stream content from Jellyfin
+- [ ] (Optional) Readarr configured if you want book management
 
 Good luck with your media server setup! 🎬📺📚
 
